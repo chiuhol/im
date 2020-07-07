@@ -17,11 +17,11 @@ class SocketManager {
   //与服务器建立连接
   Future<bool> connectWithServer(String token) async {
     debugPrint(
-        "跟服务器建立连接。。。" + AppConfig().apiHost.substring(7));
+        "跟服务器建立连接。。。" + AppConfig().apiHost);
     channel = IOWebSocketChannel.connect(
-      // "ws://" + AppConfig().apiHost.substring(7) + "/connect",
-      // headers: {'Authorization': 'Bearer ${token}'},
-      "ws://echo.websocket.org"
+      // "ws://echo.websocket.org"
+      AppConfig().apiHost,
+      headers: {'Authorization': 'Bearer ${token}'}
     );
 
     channel.stream.listen((message) {
@@ -47,6 +47,8 @@ class SocketManager {
 
   //发送消息
   Future<bool> sendMessage(Map<String, dynamic> data) async {
+    print('----------');
+    print(data.toString());
     channel.sink.add(json.encode(data));
   }
 

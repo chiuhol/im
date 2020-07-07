@@ -2,15 +2,14 @@
 class AppConfig {
   bool isBigScreen = false; //是否是大屏幕，比如desktop或者平板
 
-  Enviroment enviroment = Enviroment.DEV;
+  Enviroment enviroment = Enviroment.LOCAL;
 
   String get apiHost {
     switch (enviroment) {
       case Enviroment.LOCAL:
-        return "http://127.0.0.1:8888";
+        return "ws://dev.4dshoetech.local/websocket";
       case Enviroment.DEV:
       case Enviroment.PROD:
-        return "http://120.77.215.190:8888";
     }
   }
 }
