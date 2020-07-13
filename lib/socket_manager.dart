@@ -16,13 +16,11 @@ class SocketManager {
 
   //与服务器建立连接
   Future<bool> connectWithServer(String token) async {
-    debugPrint(
-        "跟服务器建立连接。。。" + AppConfig().apiHost);
+    debugPrint("跟服务器建立连接。。。" + AppConfig().apiHost);
     channel = IOWebSocketChannel.connect(
-      // "ws://echo.websocket.org"
-      AppConfig().apiHost,
-      headers: {'Authorization': 'Bearer ${token}'}
-    );
+        // "ws://echo.websocket.org"
+        AppConfig().apiHost,
+        headers: {'Authorization': 'Bearer $token'});
 
     channel.stream.listen((message) {
       debugPrint("收到服务器的消息：" + message.toString());
@@ -42,14 +40,19 @@ class SocketManager {
 
   //断开连接
   disconnectWithServer() async {
-    channel.sink.close();
+    if (channel != null) {
+      channel.sink.close();
+    }
   }
 
   //发送消息
   Future<bool> sendMessage(Map<String, dynamic> data) async {
     print('----------');
     print(data.toString());
-    channel.sink.add(json.encode(data));
+    if (channel != null) {
+      channel.sink.add(json.encode(data));
+    }
+    return true;
   }
 
   //外部添加监听
